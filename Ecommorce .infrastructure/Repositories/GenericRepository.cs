@@ -68,26 +68,22 @@ namespace Ecommorce_.infrastructure.Repositories
 
         public async Task<bool> UpdateAsync(T entity)
         {
-            // Get the primary key value dynamically
             var key = _context.Entry(entity).Property("Id").CurrentValue;
             if (key == null)
-            {
-                return false; // Entity has no valid primary key
-            }
+                return false;
 
-            // Check if the entity exists in the database
             var existingEntity = await _context.Set<T>().FindAsync(key);
             if (existingEntity == null)
-            {
-                return false; // Entity does not exist
-            }
+                return false;
 
-            // Mark the entity as modified and save changes
-            _context.Entry(entity).State = EntityState.Modified;
+            // This updates the tracked entity with values from the new entity
+            _context.Entry(existingEntity).CurrentValues.SetValues(entity);
             await _context.SaveChangesAsync();
 
-            return true; // Update successful
+            return true;
         }
+
+
 
 
     }
