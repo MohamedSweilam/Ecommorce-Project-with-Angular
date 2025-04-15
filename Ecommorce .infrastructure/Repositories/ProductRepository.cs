@@ -33,7 +33,24 @@ namespace Ecommorce_.infrastructure.Repositories
                 .Include(m=>m.Category)
                 .Include(m=>m.Photos)
                 .AsNoTracking();
-            if(productParams.CategoryId.HasValue){
+            
+            if (!string.IsNullOrEmpty(productParams.Search))
+            {
+                var searchWord = productParams.Search.Split(' ');
+                query = query.Where(m => searchWord.All(word=>
+                m.Name.ToLower().Contains(word.ToLower())
+                ||
+                m.Description.ToLower().Contains(word.ToLower())
+
+                    ));
+                
+            }
+
+
+
+
+            if (productParams.CategoryId.HasValue)
+            {
                 query = query.Where(m => m.CategoryId == productParams.CategoryId);
 
             }

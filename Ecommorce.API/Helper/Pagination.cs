@@ -10,6 +10,7 @@ namespace Ecommorce.API.Helper
             PageSize = pageSize;
             TotalCount = totalCount;
             Data = data;
+          
         }
 
         public int PageNumber { get; set; }
