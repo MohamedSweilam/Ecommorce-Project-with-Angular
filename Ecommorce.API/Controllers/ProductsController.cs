@@ -2,6 +2,7 @@
 using Ecommorce.API.Helper;
 using Ecommorce.Core.DTO;
 using Ecommorce.Core.interfaces;
+using Ecommorce.Core.Sharing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
@@ -16,14 +17,14 @@ namespace Ecommorce.API.Controllers
         {
         }
         [HttpGet("get-all")]
-        public async Task<IActionResult> Getall()
+        public async Task<IActionResult> Getall([FromQuery]ProductParams productParams)
         {
             try
             {
-            var product = await _unitwork.ProductRepository.GetAllAsync(x=>x.Category, x=>x.Photos);
-            if (product is null) return BadRequest(new ApiResponse(400));
-            var result = _mapper.Map<List<ProductDTO>>(product);
-            return Ok(result);
+            var product = await _unitwork.ProductRepository.GetAllAsync(productParams);
+            var totalCount = await _unitwork.ProductRepository.CountAsync();
+
+                return Ok(new Pagination<ProductDTO>(productParams.PageNumber,productParams.pageSize,totalCount,product));
 
             }
             catch (Exception ex)

@@ -25,6 +25,10 @@ namespace Ecommorce_.infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public Task<int> CountAsync()
+       =>_context.Set<T>().CountAsync();
+        
+
         public async Task DeleteAsync(int id)
         {
             var entity = await _context.Set<T>().FindAsync(id);

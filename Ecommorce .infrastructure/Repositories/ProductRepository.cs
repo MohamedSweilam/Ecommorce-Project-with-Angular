@@ -3,6 +3,7 @@ using Ecommorce.Core.DTO;
 using Ecommorce.Core.Entities.Product;
 using Ecommorce.Core.interfaces;
 using Ecommorce.Core.Services;
+using Ecommorce.Core.Sharing;
 using Ecommorce_.infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -26,6 +27,32 @@ namespace Ecommorce_.infrastructure.Repositories
             _imageMangmentService = imageMangmentService;
         }
 
+        public async Task<IEnumerable<ProductDTO>> GetAllAsync(ProductParams productParams)
+        {
+            var query = _context.Products
+                .Include(m=>m.Category)
+                .Include(m=>m.Photos)
+                .AsNoTracking();
+            if(productParams.CategoryId.HasValue){
+                query = query.Where(m => m.CategoryId == productParams.CategoryId);
+
+            }
+            if (!string.IsNullOrEmpty(productParams.Sort))
+            {
+                query = productParams.Sort switch
+                {
+                    "PriceAsc" => query.OrderBy(m => m.NewPrice),
+                    "PriceDsc" => query.OrderByDescending(m => m.NewPrice),
+                    _ => query.OrderBy(m => m.Name) // this now works even if sort is null or ""
+                };
+
+
+            }
+            
+            query = query.Skip((productParams.pageSize) * (productParams.PageNumber - 1)).Take(productParams.pageSize);
+            var result = _mapper.Map<List<ProductDTO>>(query);
+            return result;
+        }
         public async Task<bool> AddAsync(AddProductDTO productDTO)
         {
             if (productDTO == null) return false;
@@ -52,8 +79,6 @@ namespace Ecommorce_.infrastructure.Repositories
 
             return true;
         }
-
-        
 
         public async Task<bool> UpdateAsync(UpdateProductDTO updateProductDTO)
         {

@@ -16,6 +16,7 @@ namespace Ecommorce.Core.interfaces
         Task AddAsync(T entity);
         Task<bool> UpdateAsync(T entity);
         Task DeleteAsync(int id);
+        Task<int> CountAsync();
 
 
         
