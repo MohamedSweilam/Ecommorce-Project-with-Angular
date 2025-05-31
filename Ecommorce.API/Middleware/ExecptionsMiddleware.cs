@@ -63,7 +63,7 @@ namespace Ecommorce.API.Middleware
 
             if (dateNow - timesTamp < _rateLimitWindow)
             {
-                if (count >= 8)
+                if (count >= 20)
                 {
                     return false;
                 }

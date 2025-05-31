@@ -27,7 +27,7 @@ namespace Ecommorce_.infrastructure.Repositories
             _imageMangmentService = imageMangmentService;
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetAllAsync(ProductParams productParams)
+        public async Task<ReturnProductDTO> GetAllAsync(ProductParams productParams)
         {
             var query = _context.Products
                 .Include(m=>m.Category)
@@ -65,10 +65,13 @@ namespace Ecommorce_.infrastructure.Repositories
 
 
             }
+            ReturnProductDTO returnProductDTO = new ReturnProductDTO();
+            returnProductDTO.TotalCount = query.Count();
+
             
             query = query.Skip((productParams.pageSize) * (productParams.PageNumber - 1)).Take(productParams.pageSize);
-            var result = _mapper.Map<List<ProductDTO>>(query);
-            return result;
+            returnProductDTO.products = _mapper.Map<List<ProductDTO>>(query);
+            return returnProductDTO;
         }
         public async Task<bool> AddAsync(AddProductDTO productDTO)
         {

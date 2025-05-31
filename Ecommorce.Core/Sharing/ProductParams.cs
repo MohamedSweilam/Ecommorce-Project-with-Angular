@@ -11,8 +11,8 @@ namespace Ecommorce.Core.Sharing
         public string? Sort { get; set; }
         public string? Search { get; set; }
         public int? CategoryId { get; set; }
-        public int MaxPageSize { get; set; } = 6;
-        private int _pageSize;
+        public int MaxPageSize { get; set; } = 3;
+        private int _pageSize=3;
 
         public int pageSize
         {

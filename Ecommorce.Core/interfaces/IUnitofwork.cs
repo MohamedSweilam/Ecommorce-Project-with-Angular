@@ -11,5 +11,7 @@ namespace Ecommorce.Core.interfaces
         public ICategoryRepository CategoryRepository { get; }
         public IProductRepository ProductRepository { get; }
         public IPhotoRepository PhotoRepository { get; }
+        public ICustomerBasketRepository CustomerBasket { get; }
+        public IAuth Auth { get; }
     }
 }

@@ -21,7 +21,7 @@ namespace Ecommorce_.infrastructure.Repositories.Services
         public async Task<List<string>> AddImageAsync(IFormFileCollection files, string src)
         {
             var SaveImageSrc = new List<string>();
-            var imageDirectory = Path.Combine("wwwroot", "Image", src);
+            var imageDirectory = Path.Combine("wwwroot", "Images", src);
             if(Directory.Exists(imageDirectory)is not true)
             {
                 Directory.CreateDirectory(imageDirectory);
@@ -37,6 +37,7 @@ namespace Ecommorce_.infrastructure.Repositories.Services
                     {
                     await file.CopyToAsync(stream);
                     }
+                    SaveImageSrc.Add(ImageSrc);
 
                 }
             }

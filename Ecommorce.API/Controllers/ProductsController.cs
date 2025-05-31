@@ -22,9 +22,9 @@ namespace Ecommorce.API.Controllers
             try
             {
             var product = await _unitwork.ProductRepository.GetAllAsync(productParams);
-            var totalCount = await _unitwork.ProductRepository.CountAsync();
+            
 
-                return Ok(new Pagination<ProductDTO>(productParams.PageNumber,productParams.pageSize,totalCount,product));
+                return Ok(new Pagination<ProductDTO>(productParams.PageNumber,productParams.pageSize,product.TotalCount,product.products));
 
             }
             catch (Exception ex)
